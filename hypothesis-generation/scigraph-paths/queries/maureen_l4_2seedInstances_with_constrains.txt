@@ -1,0 +1,31 @@
+--- Counts 
+
+match path=(met)-[]-()-[]-()-[]-()-[]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return count(distinct path) as paths
+
+--- Common nodes close to FA (n4)
+
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, r1,n2,r2,n3,r3,n4,r4, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct n4.label,count(*) as counts
+order by counts desc
+
+--- Metapaths
+
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, r1,n2,r2,n3,r3,n4,r4, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct r1.lbl,labels(n2), r2.lbl, labels(n3),r3.lbl,labels(n4),r4.lbl, count(*) as counts
+order by counts desc

@@ -1,0 +1,317 @@
+# query topology: (source)-[*..4]-(target)
+
+
+## Fanconi anemia (FA) - metformin, monarch::scigraph
+
+### Maureen (first untick auto-complete setting)
+
+## length 3 (784 paths)
+# paths
+match path=(met:Node)-[]-()-[]-()-[]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return path
+
+# summarization node instances combinations
+match path=(met:Node)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, n2, n3,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct n2.label, n3.label, count(*) as counts
+order by counts desc
+
+# summarization node instances in position 3
+match path=(met:Node)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, n2, n3,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct n3.label,count(*) as counts
+order by counts desc
+
+# summarization node instances in position 2
+match path=(met:Node)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, n2, n3,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct n2.label,count(*) as counts
+order by counts desc
+
+# summarization types
+match path=(met:Node)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, r1,n2,r2,n3,r3,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct r1.lbl,labels(n2), r2.lbl, labels(n3),r3.lbl, count(*) as counts
+order by counts desc
+
+# summarization node types
+match path=(met:Node)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, n2, n3,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return distinct labels(n2), labels(n3), count(*) as counts
+order by counts desc
+
+
+
+### remove loop, subclass, xref
+
+# cluster source and target iri's and find paths for length 5 => super slow (36740140)
+match path=(met:Node)-[]-()-[]-()-[]-()-[]-()-[]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return count(path)
+
+# cluster source and target iri's and find paths for length 4 => 340
+match path=(met:Node)-[]-()-[]-()-[]-()-[]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return count(path)
+
+# cluster source and target iri's and find paths for length 3 => 784 (no subclass relations, they came from the AUTO-COMPLETE neo4j graph visualization setting)
+match path=(met:Node)-[]-()-[]-()-[]-(fa:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"] and fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"] and ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+with path, 
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf','database_cross_reference']] as remove_edges
+where size(remove_edges) = 0
+return count(path)
+
+######## CHECK REMOVAL OF SUBCLASSOF IN SCIGRAPH
+# with constrain
+match path=(fa)-[]-(subfa)
+match (fa:Node{iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}),(subfa:Node{iri:"http://purl.obolibrary.org/obo/MONDO_0011584"})
+with path,
+[r IN relationships(path) WHERE r.lbl IN ['subClassOf']] as remove_edges
+where size(remove_edges) = 0
+return path
+limit 1000
+
+# without constrain
+match path=(fa)-[]-(subfa)
+match (fa:Node{iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}),(subfa:Node{iri:"http://purl.obolibrary.org/obo/MONDO_0011584"})
+return path
+limit 1000
+
+#################################################
+
+# how many paths with subclass (103501), xref (5112), both (108613)
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+with path,
+[r in relationships(path) where r.lbl in [ 'subClassOf', 'database_cross_reference']] as hierarchy
+where size(hierarchy) <> 0
+return count(*) as counts
+
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+with path,
+[r in relationships(path) where r.lbl = 'subClassOf'] as hierarchy
+where size(hierarchy) <> 0
+return count(*) as counts
+
+# visualize relation label to see if subClass appears in the top ranked
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return distinct r1.lbl,r2.lbl,r3.lbl,r4.lbl, count(*) as counts
+order by counts desc
+
+# cluster source and target iri's and find paths for length 4 => 108953 (subclass relations)
+# show 1000
+match path=(met)-[]-()-[]-()-[]-()-[]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return path limit 1000
+
+# count
+match path=(met)-[]-()-[]-()-[]-()-[]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return count(path)
+
+# cluster source and target iri's and find paths for length 3 => 784 (no subclass or xref relations see:)
+# relation types combo
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return distinct r1.lbl,r2.lbl,r3.lbl, count(*) as counts
+order by counts desc
+
+# count
+match path=(met)-[]-()-[]-()-[]-(fa)
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return count(path)
+
+
+return met and fa nodes as clusters of iris
+
+# fa: parent and subclasses. remove subclass relation
+match (fa:Node)
+where fa.iri in ["http://purl.obolibrary.org/obo/MONDO_0019391","http://purl.obolibrary.org/obo/MONDO_0009213","http://purl.obolibrary.org/obo/MONDO_0011584","http://purl.obolibrary.org/obo/MONDO_0009214","http://purl.obolibrary.org/obo/MONDO_0010953","http://purl.obolibrary.org/obo/MONDO_0013565","http://purl.obolibrary.org/obo/MONDO_0013566","http://purl.obolibrary.org/obo/MONDO_0012565","http://purl.obolibrary.org/obo/MONDO_0013248","http://purl.obolibrary.org/obo/MONDO_0013499","http://purl.obolibrary.org/obo/MONDO_0014108","http://purl.obolibrary.org/obo/MONDO_0014638","http://purl.obolibrary.org/obo/MONDO_0014987","http://purl.obolibrary.org/obo/MONDO_0009215","http://purl.obolibrary.org/obo/MONDO_0010351","http://purl.obolibrary.org/obo/MONDO_0011325","http://purl.obolibrary.org/obo/MONDO_0012186","http://purl.obolibrary.org/obo/MONDO_0012187","http://purl.obolibrary.org/obo/MONDO_0014986","http://purl.obolibrary.org/obo/MONDO_0014985"]
+return fa
+
+
+# metformin: equivalent iris because they dont have a superclique iri that lead and merge the rest
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+return distinct met.iri, size(keys(met)) as attributes
+order by attributes desc
+
+match (met:Node)
+where met.iri in ["http://purl.obolibrary.org/obo/MESH_D008687","http://fdasis.nlm.nih.gov/srs/unii/9100L32L2N","http://purl.obolibrary.org/obo/CHEBI_6801","http://www.wikidata.org/entity/Q19484"]
+return met
+
+
+
+## get all paths of length 4 using mesh and count:
+
+# try reduce()
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+with path,
+reduce(acc = 0, collect(n2.iri) 
+return distinct n2, count(n2)
+order by count(n2) desc
+
+
+# separately + script
+# common edge types
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return distinct type(r1), count(type(r1))
+order by count(type(r1)) desc
+
+# common node types per position
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return distinct labels(n2), count(labels(n2))
+order by count(labels(n2)) desc
+
+# common nodes per position
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return distinct n2, count(n2)
+order by count(n2) desc
+
+# distinct node types combinations counts
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+with labels(n2) as n2l, labels(n3) as n3l, labels(n4) as n4l
+return distinct n2l,n3l,n4l, count(*) as counts
+order by counts desc
+
+# distinct node combination counts
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return distinct n2.label,n3.label,n4.label, count(*) as counts
+order by counts desc
+
+# distinct node counts 
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return count(distinct n2), count(distinct n3), count(distinct n4)
+
+#######################################################################
+# one path
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where r4.lbl <> 'subClassOf'
+return path limit 1
+
+# get all paths of length 4 filtering r4 = subclass -- 9988 edge types combos
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where r4.lbl <> 'subClassOf'
+return distinct r1.lbl,r2.lbl,r3.lbl,r4.lbl, count(*) as counts
+order by counts desc
+
+
+# get all paths of length 4 filtering r4 = subclass -- 9988 node types combos
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where r4.lbl <> 'subClassOf'
+return distinct labels(n2), labels(n3), labels(n4), count(*) as counts
+order by counts desc
+
+
+# get all paths of length 4 filtering r4 = subclass -- 9988
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where r4.lbl <> 'subClassOf'
+return count(path)
+
+
+# Get all paths of length 4 using mesh where appear both subclass or xref -- 18320
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+with path,
+[r in relationships(path) where r.lbl in [ 'subClassOf', 'database_cross_reference']] as hierarchy
+where size(hierarchy) <> 0
+return count(*) as counts
+
+# Get all paths of length 4 using mesh -- 18380
+# show
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+return path limit 1
+
+# count
+match path=(met)-[]-()-[]-()-[]-()-[]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return count(distinct path) as paths
+
+# Get all paths of length 4 using mesh -- super slow
+match path=(met)-[*4]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return count(distinct path) as paths
+
+# count paths
+# Get all paths of length <=3 using unii (0)
+match path=(met)-[*..3]-(fa) 
+match (met:Node {iri:"hhttp://fdasis.nlm.nih.gov/srs/unii/9100L32L2N"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return length(path) as length_path, count(distinct path) as paths
+order by length_path desc
+
+# Get all paths of length <=3 using mesh (250)
+match path=(met)-[*..3]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+return length(path) as length_path, count(distinct path) as paths
+order by length_path desc
+
+# confirm nodes for FA and metformin
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}) return met
+match (fa:Node {iri: "http://purl.obolibrary.org/obo/MONDO_0019391"}) return fa
+
+# look for iri (index)
+match (n:Node) where n.label =~ '[mM]etformin' return n
+match (n) where n.label contains "anconi" return n
+ 
+

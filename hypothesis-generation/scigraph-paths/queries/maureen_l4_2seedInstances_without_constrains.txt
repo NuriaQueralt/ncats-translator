@@ -1,0 +1,55 @@
+## length 4 only two instances as source and node and without subclass constrain (18361)
+# paths
+# show
+match path=(met)-[r1]-()-[r2]-()-[r3]-()-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return path limit 1000
+
+# count
+match path=(met)-[]-()-[]-()-[]-()-[]-(fa) 
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"}) 
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return count(distinct path) as paths
+
+# summarization node instances combinations
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct n2.label, n3.label, n4.label, count(*) as counts
+order by counts desc
+
+# summarization node instances in position 4
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct n4.label,count(*) as counts
+order by counts desc
+
+# summarization node instances in position 3
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct n3.label,count(*) as counts
+order by counts desc
+
+# summarization node instances in position 2
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct n2.label,count(*) as counts
+order by counts desc
+
+# summarization types
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct r1.lbl,labels(n2), r2.lbl, labels(n3),r3.lbl,labels(n4),r4.lbl, count(*) as counts
+order by counts desc
+
+# summarization node types
+match path=(met)-[r1]-(n2)-[r2]-(n3)-[r3]-(n4)-[r4]-(fa)
+match (met:Node {iri:"http://purl.obolibrary.org/obo/MESH_D008687"}), (fa:Node {iri:"http://purl.obolibrary.org/obo/MONDO_0019391"})
+where ALL(x IN nodes(path) WHERE single(y IN nodes(path) WHERE y = x))
+return distinct labels(n2), labels(n3),labels(n4), count(*) as counts
+order by counts desc
